@@ -1,4 +1,4 @@
-# JobTerkini
+# JobTerkini 📃
 
 🚀 **JobTerkini** adalah platform pencarian kerja yang menghubungkan pencari kerja dengan perusahaan yang membutuhkan tenaga profesional.
 
