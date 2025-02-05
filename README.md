@@ -18,7 +18,7 @@
 ## 📥 Instalasi
 1. Clone repository:
    ```sh
-   git clone https://github.com/yourusername/jobterkini.git
+   git clone https://github.com/nabilasdeveloper/jobterkini.git
    cd jobterkini
    ```
 2. Install dependencies:
