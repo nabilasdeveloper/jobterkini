@@ -29,26 +29,26 @@
         </div>
     </div>
 </div>
-{{-- <div class="row">
-        <div class="col-lg-6 d-flex align-items-strech">
-            <div class="card w-100">
-                <div class="card-body">
-                    <h5 class="card-title fw-semibold mb-4">
-                        Data Lowongan Pekerjaan
-                    </h5>
-                    <p class="mb-0"><span class="h2 text-secondary">20</span></p>
-                </div>
+<div class="row">
+    <div class="col-lg-6 d-flex align-items-strech">
+        <div class="card w-100">
+            <div class="card-body">
+                <h5 class="card-title fw-semibold mb-4">
+                    Data Lowongan Pekerjaan
+                </h5>
+                <p class="mb-0"><span class="h2 text-secondary">20</span></p>
             </div>
         </div>
-        <div class="col-lg-6 d-flex align-items-strech">
-            <div class="card w-100">
-                <div class="card-body">
-                    <h5 class="card-title fw-semibold mb-4">
-                        Data Pendaftar Lowongan
-                    </h5>
-                    <p class="mb-0"><span class="h2 text-secondary">16</span></p>
-                </div>
+    </div>
+    <div class="col-lg-6 d-flex align-items-strech">
+        <div class="card w-100">
+            <div class="card-body">
+                <h5 class="card-title fw-semibold mb-4">
+                    Data Pendaftar Lowongan
+                </h5>
+                <p class="mb-0"><span class="h2 text-secondary">16</span></p>
             </div>
         </div>
-    </div> --}}
+    </div>
+</div>
 <x-perusahaan.perusahaan-footer></x-perusahaan.perusahaan-footer>
