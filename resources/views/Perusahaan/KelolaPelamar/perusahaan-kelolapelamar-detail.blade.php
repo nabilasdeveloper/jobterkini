@@ -30,7 +30,7 @@
                         <tbody>
                             @foreach ($pelamarList as $pelamar)
                                 <tr>
-                                    <td>{{ $pelamar->pengguna->nama }}</td>
+                                    <td>{{ $pelamar->users->nama }}</td>
                                     <td>
                                         <a href="{{ asset('storage/' . $pelamar->surat_lamaran) }}" target="_blank">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
@@ -73,7 +73,7 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <form action="{{ route('perusahaan.kelolapendaftar.update', $pelamar->id) }}"
+                                        <form action="{{ route('perusahaan.kelolapelamar.update', $pelamar->id) }}"
                                             method="POST">
                                             @csrf
                                             @method('PUT')
@@ -100,7 +100,7 @@
         </div>
     @endif
 
-    <a href="{{ route('perusahaan.kelolapendaftar') }}" class="btn btn-secondary mt-3">Kembali</a>
+    <a href="{{ route('perusahaan.kelolapelamar') }}" class="btn btn-secondary mt-3">Kembali</a>
 </div>
 
 <x-perusahaan.perusahaan-footer></x-perusahaan.perusahaan-footer>

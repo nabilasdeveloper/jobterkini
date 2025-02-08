@@ -9,12 +9,17 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminKelolaJurusanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $admin = Auth::guard('admin')->user();
-        $jurusanlist = Jurusan::orderBy('nama_jurusan', 'asc')->get();
+        $search = $request->input('search'); // Ambil input pencarian
+
+        $jurusanlist = Jurusan::where('nama_jurusan', 'LIKE', "%$search%")
+                    ->orderBy('nama_jurusan', 'asc')
+                    ->paginate(5); // 10 data per halaman
         return view('admin.KelolaJurusan.admin-kelolajurusan', compact('admin', 'jurusanlist'));
     }
+
 
     public function add()
     {

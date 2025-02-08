@@ -28,20 +28,21 @@
                 Tambah Data Perusahaan
             </a>
         </div>
-        <div class="">
-            <form action="" class="">
-                <input type="text" class="form-control py-1 px-2">
+        <div class="d-flex justify-content-between">
+            <form method="GET" action="{{ route('admin.kelolajurusan') }}" class="d-flex">
+                <input type="text" name="search" class="form-control py-1 px-2" placeholder="Cari Jurusan..."
+                    value="{{ request('search') }}">
+                <button type="submit" class="btn btn-primary ms-2">Cari</button>
             </form>
         </div>
     </div>
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title fw-semibold mb-4">Data Perusahaan</h5>
             <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">Nomor</th>
-                        <th scope="col">Nama Perusahaan</th>
+                        <th scope="col">Nama Jurusan</th>
                         <th scope="col">Action</th>
                         <th scope="col"></th>
                         <th scope="col"></th>
@@ -77,6 +78,14 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <p class="mb-0">Menampilkan {{ $jurusanlist->firstItem() }} - {{ $jurusanlist->lastItem() }} dari
+                    {{ $jurusanlist->total() }} data</p>
+                <nav>
+                    {{ $jurusanlist->appends(['search' => request('search')])->links() }}
+                </nav>
+            </div>
+
         </div>
     </div>
 </div>

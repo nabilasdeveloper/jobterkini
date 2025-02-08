@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Sign in - Perusahaan</title>
+    <title>Register - Perusahaan</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/logos/favicon.png') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/styles.min.css') }}" />
 </head>
@@ -27,11 +27,13 @@
                             <div class="card-body">
                                 <div class="mb-5">
                                     <h1><strong>Job<span class="text-primary">Terkini.co</span></strong></h1>
-                                    <h5 class=""><strong>Login sebagai</strong> <a href=""> Perusahaan</a>
-                                    </h5>
+                                    <h5><strong>Daftar sebagai</strong> <a href=""> Perusahaan</a></h5>
                                 </div>
+
                                 @if (session('success'))
-                                    <p>{{ session('success') }}</p>
+                                    <div class="alert alert-success">
+                                        {{ session('success') }}
+                                    </div>
                                 @endif
 
                                 @if ($errors->any())
@@ -41,22 +43,29 @@
                                         </div>
                                     @endforeach
                                 @endif
-                                <form method="POST" action="{{ route('perusahaan.login') }}">
+
+                                <form method="POST" action="{{ route('perusahaan.register') }}" enctype="multipart/form-data">
                                     @csrf
                                     <div class="mb-3">
+                                        <label for="nama_perusahaan" class="form-label">Nama Perusahaan</label>
+                                        <input type="text" class="form-control" name="nama_perusahaan" id="nama_perusahaan" required>
+                                    </div>
+                                    <div class="mb-3">
                                         <label for="email_perusahaan" class="form-label">Email Perusahaan</label>
-                                        <input type="email" class="form-control" name="email_perusahaan"
-                                            id="email_perusahaan" aria-describedby="emailHelp" required>
+                                        <input type="email" class="form-control" name="email_perusahaan" id="email_perusahaan" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Password</label>
+                                        <input type="password" class="form-control" name="password" id="password" required>
                                     </div>
                                     <div class="mb-4">
-                                        <label for="password" class="form-label">Password Perusahaan</label>
-                                        <input type="password" class="form-control" id="password" name="password"
-                                            required>
+                                        <label for="file_verifikasi" class="form-label">Upload Dokumen Verifikasi</label>
+                                        <input type="file" class="form-control" name="file_verifikasi" id="file_verifikasi" required>
+                                        <small class="text-muted">Unggah dokumen yang membuktikan legalitas perusahaan.</small>
                                     </div>
-                                    <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Sign
-                                        In</button>
+                                    <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Daftar</button>
                                 </form>
-                                <span class="d-flex justify-content-center">Belum punya akun? <a href="{{ route('perusahaan.register.form') }}"> Registrasi Akun</a></span>
+                                <p class="text-center">Sudah punya akun? <a href="{{ route('perusahaan.login') }}">Login di sini</a></p>
                             </div>
                         </div>
                     </div>

@@ -34,11 +34,11 @@
                     </a>
                 </li>
                 <li class="sidebar-item mb-2">
-                    <a class="sidebar-link {{ request()->routeIs('admin.kelolajurusan*') ? 'sidebaractive' : '' }}" href="{{ route('admin.kelolajurusan')}}" aria-expanded="false">
+                    <a class="sidebar-link {{ request()->routeIs('admin.verifikasi*') ? 'sidebaractive' : '' }}" href="{{ route('admin.verifikasi')}}" aria-expanded="false">
                         <span>
                             <i class="ti ti-article"></i>
                         </span>
-                        <span class="hide-menu">Kelola Data Jurusan</span>
+                        <span class="hide-menu">Verifikasi Perusahaan</span>
                     </a>
                 </li>
             </ul>

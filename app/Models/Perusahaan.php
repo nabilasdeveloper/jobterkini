@@ -23,6 +23,8 @@ class Perusahaan extends Authenticatable
         'ukuran_perusahaan',
         'website_perusahaan',
         'img_perusahaan',
+        'file_verifikasi',
+        'status_verifikasi', // 'pending' atau 'approved'
     ];
 
     public function lowongan()

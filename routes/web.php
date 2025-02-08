@@ -3,13 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminPerusahaanController;
 use App\Http\Controllers\Admin\AdminKelolaJurusanController;
 use App\Http\Controllers\Perusahaan\PerusahaanAuthController;
 use App\Http\Controllers\Admin\AdminKelolaPerusahaanController;
+use App\Http\Controllers\Perusahaan\PerusahaanPelamarController;
 use App\Http\Controllers\Perusahaan\PerusahaanProfileController;
 use App\Http\Controllers\Perusahaan\PerusahaanDashboardController;
 use App\Http\Controllers\Perusahaan\PerusahaanKelolaLowonganController;
-use App\Http\Controllers\Perusahaan\PerusahaanPelamarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,34 +46,39 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     Route::get('/kelola-jurusan/add', [AdminKelolaJurusanController::class, 'add'])->name('admin.kelolajurusan.add');
     Route::post('/kelola-jurusan/adds', [AdminKelolaJurusanController::class, 'adds'])->name('admin.kelolajurusan.adds');
     Route::delete('/kelola-jurusan/{id}', [AdminKelolaJurusanController::class, 'destroy'])->name('admin.kelolajurusan.destroy');
+
+    Route::get('/verifikasi-perusahaan', [AdminPerusahaanController::class, 'index'])->name('admin.verifikasi');
+    Route::post('/verifikasi-perusahaan/{id}/verified', [AdminPerusahaanController::class, 'approve'])->name('admin.verifikasi.approve');
+    Route::post('/verifikasi-perusahaan/{id}/reject', [AdminPerusahaanController::class, 'reject'])->name('admin.verifikasi.reject');
 });
 
 Route::prefix('perusahaan')->group(function () {
+    Route::get('/register', [PerusahaanAuthController::class, 'showRegisterForm'])->name('perusahaan.register.form');
+    Route::post('/register', [PerusahaanAuthController::class, 'register'])->name('perusahaan.register');
+
     Route::get('/login', [PerusahaanAuthController::class, 'index'])->name('perusahaan.login');
     Route::post('/login', [PerusahaanAuthController::class, 'login']);
     Route::post('/logout', [PerusahaanAuthController::class, 'logout'])->name('perusahaan.logout');
 });
 
 Route::prefix('perusahaan')->middleware(['perusahaan'])->group(function () {
-
     // Dashboard
     Route::get('/dashboard', [PerusahaanDashboardController::class, 'index'])->name('perusahaan.dashboard');
 
     // Profil & Edit
     Route::get('/profile', [PerusahaanProfileController::class, 'index'])->name('perusahaan.profile');
     Route::post('/profile/update-profile', [PerusahaanProfileController::class, 'updateProfile'])->name('perusahaan.updateProfile');
+});
 
+Route::prefix('perusahaan')->middleware(['perusahaan', 'perusahaan.verified'])->group(function () {
     // Kelola Lowongan
     Route::get('/kelola-lowongan', [PerusahaanKelolaLowonganController::class, 'index'])->name('perusahaan.kelolalowongan');
-    Route::get('/kelola-lowongan/detail-lowongan/{id}', [PerusahaanKelolaLowonganController::class, 'show'])->name('perusahaan.kelolalowongan.detail');
-    Route::post('/kelola-lowongan/detail-lowongan/{id}/update-status', [PerusahaanKelolaLowonganController::class, 'ubahstatus'])->name('perusahaan.kelolalowongan.ubahstatus');
     Route::get('/kelola-lowongan/add', [PerusahaanKelolaLowonganController::class, 'add'])->name('perusahaan.kelolalowongan.add');
     Route::post('/kelola-lowongan/adds', [PerusahaanKelolaLowonganController::class, 'adds'])->name('perusahaan.kelolalowongan.adds');
-
-    Route::get('/kelola-lowongan/edit/{id}', [PerusahaanKelolaLowonganController::class, 'edit'])->name('perusahaan.kelolalowongan.edit.form');
-    Route::post('/kelola-lowongan/edit', [PerusahaanKelolaLowonganController::class, 'update'])->name('perusahaan.kelolalowongan.edit');
-
+    Route::get('/kelola-lowongan/edit/{id}', [PerusahaanKelolaLowonganController::class, 'edit'])->name('perusahaan.kelolalowongan.edit');
+    Route::put('/kelola-lowongan/update/{id}', [PerusahaanKelolaLowonganController::class, 'update'])->name('perusahaan.kelolalowongan.update');
     Route::delete('/kelola-lowongan/{id}', [PerusahaanKelolaLowonganController::class, 'destroy'])->name('perusahaan.kelolalowongan.destroy');
+
 
     // Kelola Pendaftar
     Route::get('/kelola-pelamar', [PerusahaanPelamarController::class, 'index'])->name('perusahaan.kelolapelamar');

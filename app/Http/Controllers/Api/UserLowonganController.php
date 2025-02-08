@@ -78,7 +78,11 @@ class UserLowonganController extends Controller
             ->where('nama_lowongan', 'LIKE', "%{$query}%")
             ->orWhereHas('perusahaan', function ($q) use ($query) {
                 $q->where('nama_perusahaan', 'LIKE', "%{$query}%");
-            })->get();
+            })
+            ->orWhere('jurusan_pendidikan_lowongan', 'LIKE', "%{$query}%")
+            ->orWhere('kategori_lowongan', 'LIKE', "%{$query}%")
+            ->orWhere('waktu_bekerja', 'LIKE', "%{$query}%")
+            ->get();
 
         if ($lowongan->isEmpty()) {
             return response()->json([

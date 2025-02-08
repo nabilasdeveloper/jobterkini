@@ -31,11 +31,11 @@
                                         <td>{{ $lowongan->nama_lowongan }}</td>
                                         <td>
                                             <span class="badge bg-primary">
-                                                {{ $lowongan->pendaftar_lowongan_count }}
+                                                {{ $lowongan->pelamar->count() }}
                                             </span>
                                         </td>
                                         <td>
-                                                class="btn btn-sm btn-info">
+                                            <a href="{{ route('perusahaan.kelolapelamar.detail', $lowongan->id) }}" class="btn btn-sm btn-info" >
                                                 Lihat Pelamar
                                             </a>
                                         </td>
