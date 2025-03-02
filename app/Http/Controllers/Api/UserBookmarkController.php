@@ -11,8 +11,14 @@ class UserBookmarkController extends Controller
 {
     public function index()
     {
+        $user = Auth::guard('sanctum')->user();
+
+        if (!$user) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 401);
+        }
+
         $bookmarks = Bookmark::where('users_id', Auth::guard('sanctum')->id())
-            ->with('lowongan')
+            ->with(['lowongan.perusahaan'])
             ->get();
 
         return response()->json(['status' => 'success', 'data' => $bookmarks], 200);
@@ -24,27 +30,54 @@ class UserBookmarkController extends Controller
             'lowongan_id' => 'required|exists:lowongan,id',
         ]);
 
-        $users = Auth::guard('sanctum')->user();
+        $user = Auth::guard('sanctum')->user();
 
-        if (!$users) {
+        if (!$user) {
             return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 401);
         }
 
-        $cekBookmark = Bookmark::where('users_id', $users->id)
+        $bookmark = Bookmark::where('users_id', $user->id)
             ->where('lowongan_id', $request->lowongan_id)
-            ->exists();
+            ->first();
 
-        if ($cekBookmark) {
-            return response()->json(['status' => 'error', 'message' => 'Lowongan sudah di-bookmark'], 409);
+        if ($bookmark) {
+            // Jika sudah ada, hapus bookmark
+            $bookmark->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Bookmark dihapus',
+                'bookmarked' => false
+            ], 200);
         }
 
-        $bookmark = Bookmark::create([
-            'users_id' => $users->id,
+        // Jika belum ada, tambahkan bookmark
+        $newBookmark = Bookmark::create([
+            'users_id' => $user->id,
             'lowongan_id' => $request->lowongan_id,
         ]);
 
-        return response()->json(['status' => 'success', 'message' => 'Bookmark berhasil ditambahkan', 'data' => $bookmark], 201);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Lowongan telah di-bookmark',
+            'bookmarked' => true,
+            'data' => $newBookmark
+        ], 201);
     }
+
+
+    public function checkBookmark($id)
+    {
+        $user = Auth::guard('sanctum')->user();
+
+        $isBookmarked = Bookmark::where('users_id', $user->id)
+            ->where('lowongan_id', $id)
+            ->exists();
+
+        return response()->json([
+            'bookmarked' => $isBookmarked
+        ], 200);
+    }
+
 
     public function destroy($id)
     {

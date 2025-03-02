@@ -13,6 +13,7 @@ class UserAuthController extends Controller
 {
     public function register(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'nama' => 'required|string|max:255',
             'email' => 'required|string|max:255|unique:users',
@@ -29,37 +30,56 @@ class UserAuthController extends Controller
             'password' => Hash::make($request->password)
         ]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('secret')->plainTextToken;
 
         return response()->json([
+            'message' => 'Registrasi akun berhasil!',
             'data' => $user,
-            'access_token' => $token,
+            'token' => $token,
             'token_type' => 'Bearer'
         ]);
     }
 
     public function login(Request $request)
     {
-        if (! Auth::attempt($request->only('email', 'password'))) {
-            return response()->json([
+
+        $cek = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:6'
+        ]);
+
+        if (!Auth::attempt($cek)) {
+            return response([
                 'message' => 'Email atau password salah!'
             ], 401);
         }
 
-        $user = User::where('email', $request->email)->firstOrFail();
-
-        if($user->tokens()->exists()){
-            return response()->json([
-                'message' => 'Token sudah ada harap logout'
-            ]);
-        }
-
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = auth()->user()->createToken('secret')->plainTextToken;
 
         return response()->json([
+            'user' => auth()->user(),
             'message' => 'Login success',
-            'access_token' => $token,
-            'token_type' => 'Bearer'
+            'token' => $token,
+            'token_type' => 'Bearer',
+        ], 200);
+    }
+
+    public function user()
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        return response()->json([
+            'message' => 'Data berhasil ditemukan',
+            'id' => $user->id,
+            'nama' => $user->nama,
+            'deskripsi' => $user->deskripsi,
+            'alamat' => $user->alamat,
+            'contact' => $user->contact,
+            'foto' => $user->foto ? asset('storage/' . $user->foto) : null,
         ]);
     }
 
@@ -70,6 +90,4 @@ class UserAuthController extends Controller
             'message' => 'Logout berhasil!'
         ]);
     }
-
-    
 }

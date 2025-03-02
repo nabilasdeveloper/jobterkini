@@ -10,28 +10,37 @@ use App\Models\Pelamar;
 
 class UserLowonganController extends Controller
 {
+
     public function lowongan()
     {
-        $perusahaan = Perusahaan::withCount([
-            'lowongan' => function ($query) {
-                $query->where('status_lowongan', 'Aktif'); // Hanya hitung lowongan dengan status "Aktif"
-            }
-        ])->get();
+        try {
+            $perusahaan = Perusahaan::withCount([
+                'lowongan' => function ($query) {
+                    $query->where('status_lowongan', 'Aktif');
+                }
+            ])->get();
 
-        $lowongan = Lowongan::with('perusahaan')
-            ->where('status_lowongan', 'Aktif') // Hanya ambil lowongan yang statusnya "Aktif"
-            ->latest()
-            ->get();
+            $lowongan = Lowongan::with('perusahaan')
+                ->where('status_lowongan', 'Aktif')
+                ->latest()
+                ->get();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Data lowongan berhasil diambil',
-            'data' => [
-                'perusahaan' => $perusahaan,
-                'lowongan' => $lowongan
-            ]
-        ], 200);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Data lowongan berhasil diambil',
+                'data' => [
+                    // 'perusahaan' => $perusahaan,
+                    'lowongan' => $lowongan
+                ]
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
     }
+
 
     public function showLowongan($id)
     {
@@ -74,7 +83,9 @@ class UserLowonganController extends Controller
             ], 400);
         }
 
-        $lowongan = Lowongan::with('perusahaan')
+        $lowongan = Lowongan::with(['perusahaan' => function ($query) {
+            $query->select('id', 'nama_perusahaan', 'email_perusahaan', 'contact_perusahaan', 'deskripsi_perusahaan', 'alamat_perusahaan', 'jenis_industri_perusahaan', 'website_perusahaan', 'img_perusahaan');
+        }])
             ->where('nama_lowongan', 'LIKE', "%{$query}%")
             ->orWhereHas('perusahaan', function ($q) use ($query) {
                 $q->where('nama_perusahaan', 'LIKE', "%{$query}%");
@@ -83,6 +94,7 @@ class UserLowonganController extends Controller
             ->orWhere('kategori_lowongan', 'LIKE', "%{$query}%")
             ->orWhere('waktu_bekerja', 'LIKE', "%{$query}%")
             ->get();
+
 
         if ($lowongan->isEmpty()) {
             return response()->json([

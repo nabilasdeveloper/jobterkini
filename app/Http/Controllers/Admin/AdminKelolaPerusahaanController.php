@@ -10,9 +10,13 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminKelolaPerusahaanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $dataperusahaan = Perusahaan::all();
+        $search = $request->input('search'); // Ambil input pencarian
+
+        $dataperusahaan = Perusahaan::where('nama_perusahaan', 'LIKE', "%$search%")
+            ->orderBy('nama_perusahaan', 'asc')
+            ->paginate(5); // 5 data per halaman
         $admin = Auth::guard('admin')->user(); // Ambil data admin yang sedang login
         return view('admin.KelolaPerusahaan.admin-kelolaperusahaan', compact([
             'admin',
@@ -20,7 +24,8 @@ class AdminKelolaPerusahaanController extends Controller
         ]));
     }
 
-    public function add(){
+    public function add()
+    {
         $admin = Auth::guard('admin')->user(); // Ambil data admin yang sedang login
         return view('Admin.KelolaPerusahaan.admin-kelolaperusahaan-add', compact('admin'));
     }
@@ -32,17 +37,18 @@ class AdminKelolaPerusahaanController extends Controller
             'email_perusahaan' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
         ]);
-        
+
         Perusahaan::create([
             'nama_perusahaan' => $request->nama_perusahaan,
             'email_perusahaan' => $request->email_perusahaan,
             'password' => Hash::make($request->password),
+            'status_verifikasi' => 'Verified',
         ]);
-        
-        
+
+
         return redirect()->route('admin.kelolaperusahaan')->with('success', 'Data perusahaan berhasil ditambahkan.');
     }
-    
+
     public function show($id)
     {
         $perusahaan = Perusahaan::findOrFail($id);
@@ -53,7 +59,7 @@ class AdminKelolaPerusahaanController extends Controller
     {
         $perusahaan = Perusahaan::findOrFail($id);
         $perusahaan->delete();
-    
+
         return redirect()->route('admin.kelolaperusahaan')->with('success', 'Data Perusahaan berhasil dihapus.');
     }
 }

@@ -68,5 +68,7 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'perusahaan' => \App\Http\Middleware\PerusahaanMiddleware::class,
         'perusahaan.verified' => \App\Http\Middleware\CheckPerusahaanVerified::class,
+        'userMiddleware' => \App\Http\Middleware\UserMiddleware::class,
+        'profile-complete' => \App\Http\Middleware\CheckProfileUser::class,
     ];
 }

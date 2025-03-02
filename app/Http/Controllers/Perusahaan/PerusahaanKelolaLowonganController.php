@@ -56,7 +56,7 @@ class PerusahaanKelolaLowonganController extends Controller
             'penutupan_lowongan' => 'required|date',
             'rincian_lowongan' => 'required|string',
             'kategori_lowongan' => 'required|string',
-            'waktu_bekerja' => 'required|in:Full Time, Harian, Paruh Waktu',
+            'waktu_bekerja' => 'required',
             'gaji_perbulan' => 'required|string',
             'status_lowongan' => 'required|in:Aktif,Non-Aktif',
         ]);

@@ -51,6 +51,37 @@ class UserLamaranController extends Controller
         return response()->json(['status' => 'success', 'message' => 'Lamaran berhasil dikirim.']);
     }
 
+    public function checkLamaran($id)
+    {
+        // Mendapatkan ID pengguna yang sedang login
+        $users_id = Auth::guard('sanctum')->id();
+
+        if (!$users_id) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 401);
+        }
+
+        // Cek apakah pengguna sudah melamar di lowongan ini
+        $pelamar = Pelamar::where('users_id', $users_id)
+            ->where('lowongan_id', $id)
+            ->first();
+
+        if ($pelamar) {
+            return response()->json([
+                'message' => 'success',
+                'sudah_melamar' => true,
+                'status' => $pelamar->status, // Mengembalikan status lamaran
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'success',
+            'sudah_melamar' => false,
+            'status' => null, // Jika belum melamar, status null
+        ]);
+    }
+
+
+
     public function history()
     {
         $users_id = Auth::guard('sanctum')->id();
@@ -59,13 +90,11 @@ class UserLamaranController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 401);
         }
 
-        // Ambil semua lamaran pengguna
         $lamaran = Pelamar::where('users_id', $users_id)
             ->with('lowongan.perusahaan')
-            ->latest()
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return response()->json(['status' => 'success', 'data' => $lamaran]);
     }
-
 }

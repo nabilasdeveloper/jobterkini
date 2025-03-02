@@ -53,81 +53,83 @@
         </div>
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title fw-semibold mb-4">Data Lowongan Anda</h5>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Nomor</th>
-                            <th scope="col">Nama Lowongan</th>
-                            <th scope="col">Penutupan Lowongan</th>
-                            <th scope="col">Status Lowongan</th>
-                            <th scope="col">Action</th>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($lowongan as $lowongan)
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <th scope="row">{{ $loop->iteration }}</th>
-                                <td>{{ $lowongan->nama_lowongan }}</td>
-                                <td>{{ $lowongan->penutupan_lowongan }}</td>
-                                <td>{{ $lowongan->status_lowongan }}</td>
-                                <td>
-                                    <a href="{{ route('perusahaan.kelolalowongan.detail', $lowongan->id) }}"
-                                        class="d-flex">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-search">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
-                                            <path d="M21 21l-6 -6" />
-                                        </svg>
-                                        <p>Detail</p>
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="{{ route('perusahaan.kelolalowongan.edit.form', $lowongan->id) }}"
-                                        class="d-flex text-warning">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                            <path
-                                                d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                            <path d="M16 5l3 3" />
-                                        </svg>
-                                        <p>Edit</p>
-                                    </a>
-                                </td>
-                                <td>
-                                    <button class="text-danger d-flex" onclick="confirmDelete({{ $lowongan->id }})"><svg
-                                            xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M4 7l16 0" />
-                                            <path d="M10 11l0 6" />
-                                            <path d="M14 11l0 6" />
-                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                                        </svg>Hapus</button>
-
-                                    <form id="delete-form-{{ $lowongan->id }}"
-                                        action="{{ route('perusahaan.kelolalowongan.destroy', $lowongan->id) }}"
-                                        method="POST" style="display: none;">
-                                        @csrf
-                                        @method('DELETE')
-                                    </form>
-                                </td>
+                                <th scope="col">Nomor</th>
+                                <th scope="col">Nama Lowongan</th>
+                                <th scope="col">Penutupan Lowongan</th>
+                                <th scope="col">Status Lowongan</th>
+                                <th scope="col">Action</th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($lowongan as $lowongan)
+                                <tr>
+                                    <th scope="row">{{ $loop->iteration }}</th>
+                                    <td>{{ $lowongan->nama_lowongan }}</td>
+                                    <td>{{ $lowongan->penutupan_lowongan }}</td>
+                                    <td>{{ $lowongan->status_lowongan }}</td>
+                                    <td>
+                                        <a href="{{ route('perusahaan.kelolalowongan.detail', $lowongan->id) }}"
+                                            class="d-flex">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-search">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+                                                <path d="M21 21l-6 -6" />
+                                            </svg>
+                                            <p>Detail</p>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('perusahaan.kelolalowongan.edit', $lowongan->id) }}"
+                                            class="d-flex text-warning">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                                <path
+                                                    d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                                <path d="M16 5l3 3" />
+                                            </svg>
+                                            <p>Edit</p>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <button class="text-danger d-flex"
+                                            onclick="confirmDelete({{ $lowongan->id }})"><svg
+                                                xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M4 7l16 0" />
+                                                <path d="M10 11l0 6" />
+                                                <path d="M14 11l0 6" />
+                                                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                            </svg>Hapus</button>
+
+                                        <form id="delete-form-{{ $lowongan->id }}"
+                                            action="{{ route('perusahaan.kelolalowongan.destroy', $lowongan->id) }}"
+                                            method="POST" style="display: none;">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

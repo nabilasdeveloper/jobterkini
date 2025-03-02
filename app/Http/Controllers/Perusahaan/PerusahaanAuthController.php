@@ -27,6 +27,13 @@ class PerusahaanAuthController extends Controller
             'email_perusahaan' => 'required|email|unique:perusahaan,email_perusahaan',
             'password' => 'required|min:6',
             'file_verifikasi' => 'required|mimes:pdf,jpg,jpeg,png|max:2048',
+        ], [
+            'nama_perusahaan.required' => 'Kolom nama perusahaan belum anda isi!',
+            'email_perusahaan.required' => 'Kolom email perusahaan belum anda isi!',
+            'email_perusahaan.unique' => 'Email sudah terdaftar, coba yang lain!',
+            'password.required' => 'Kolom password belum anda isi!',
+            'file_verifikasi.required' => 'Kolom file verifikasi belum anda isi!',
+            'file_verifikasi.mimes' => 'file verifikasi hanya berupa. PDF, JPG, JPEG, PNG',
         ]);
 
         $filePath = $request->file('file_verifikasi')->store('verifikasi_perusahaan', 'public');

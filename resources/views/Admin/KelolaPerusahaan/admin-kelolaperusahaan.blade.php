@@ -28,9 +28,11 @@
                 Tambah Data Perusahaan
             </a>
         </div>
-        <div class="">
-            <form action="" class="">
-                <input type="text" class="form-control py-1 px-2">
+        <div class="d-flex justify-content-between">
+            <form method="GET" action="{{ route('admin.kelolaperusahaan') }}" class="d-flex">
+                <input type="text" name="search" class="form-control py-1 px-2" placeholder="Cari Perusahaan..."
+                    value="{{ request('search') }}">
+                <button type="submit" class="btn btn-primary ms-2">Cari</button>
             </form>
         </div>
     </div>
@@ -43,8 +45,7 @@
                         <th scope="col">Nomor</th>
                         <th scope="col">Logo</th>
                         <th scope="col">Nama Perusahaan</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Contact</th>
+                        <th scope="col">Status</th>
                         <th scope="col">Action</th>
                         <th scope="col"></th>
                         <th scope="col"></th>
@@ -59,8 +60,17 @@
                                     alt="Profile Perusahaan" width="40" height="40" class="rounded-sm" />
                             </td>
                             <td>{{ $perusahaan->nama_perusahaan }}</td>
-                            <td>{{ $perusahaan->email_perusahaan }}</td>
-                            <td>{{ $perusahaan->contact_perusahaan }}</td>
+                            <td>
+                                @if ($perusahaan->status_verifikasi === 'Verified')
+                                    <button class="btn btn-sm btn-success">
+                                        {{ $perusahaan->status_verifikasi }}
+                                    </button>
+                                @else
+                                    <button class="btn btn-sm btn-danger">
+                                        {{ $perusahaan->status_verifikasi }}
+                                    </button>
+                                @endif
+                            </td>
                             <td>
                                 <a href="{{ route('admin.kelolaperusahaan.detail', $perusahaan->id) }}" class="d-flex">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
@@ -88,17 +98,26 @@
                                         <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
                                     </svg>Hapus</button>
 
-                                <form id="delete-form-{{ $perusahaan->id }}"
-                                    action="{{ route('admin.perusahaan.destroy', $perusahaan->id) }}" method="POST"
-                                    style="display: none;">
+                                    <form id="delete-form-{{ $perusahaan->id }}"
+                                        action="{{ route('admin.perusahaan.destroy', $perusahaan->id) }}" method="POST"
+                                        style="display: none;">
+                                        @method('DELETE')
                                     @csrf
-                                    @method('DELETE')
                                 </form>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <p class="mb-0">
+                    Menampilkan {{ $dataperusahaan->firstItem() }} dari
+                    {{ $dataperusahaan->total() }} data
+                </p>
+                <nav>
+                    {{ $dataperusahaan->appends(['search' => request('search')])->links() }}
+                </nav>
+            </div>
         </div>
     </div>
 </div>
@@ -130,18 +149,22 @@
     @endif
 </script>
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div id="successToast" class="toast align-items-center text-bg-success border-0 p-2 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true">
+    <div id="successToast" class="toast align-items-center text-bg-success border-0 p-2 shadow-lg" role="alert"
+        aria-live="assertive" aria-atomic="true">
         <div class="d-flex align-items-center">
             <!-- Tambahkan Ikon di Sini -->
             <div class="p-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM12.354 5.646a.5.5 0 0 0-.708 0L7 10.293 4.854 8.146a.5.5 0 1 0-.708.708l2.5 2.5a.5.5 0 0 0 .708 0l5-5a.5.5 0 0 0 0-.708z"/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
+                    class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM12.354 5.646a.5.5 0 0 0-.708 0L7 10.293 4.854 8.146a.5.5 0 1 0-.708.708l2.5 2.5a.5.5 0 0 0 .708 0l5-5a.5.5 0 0 0 0-.708z" />
                 </svg>
             </div>
             <div class="toast-body">
                 <strong>Berhasil!</strong> {{ session('success') }}
             </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                aria-label="Close"></button>
         </div>
     </div>
 </div>

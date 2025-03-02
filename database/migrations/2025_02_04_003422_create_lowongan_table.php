@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('jurusan_pendidikan_lowongan');
             $table->text('persyaratan_lowongan');
             $table->date('penutupan_lowongan');
-            $table->text('rincian_lowongan'); //Misalnya Job Deskripsi, Kebutuhan/reuirements
+            $table->text('rincian_lowongan');
             $table->text('kategori_lowongan');
             $table->text('waktu_bekerja');
             $table->text('gaji_perbulan');

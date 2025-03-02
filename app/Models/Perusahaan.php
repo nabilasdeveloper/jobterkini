@@ -12,6 +12,7 @@ class Perusahaan extends Authenticatable
     use HasFactory;
 
     protected $table = 'perusahaan';
+    
     protected $fillable = [
         'nama_perusahaan',
         'email_perusahaan',
@@ -26,6 +27,7 @@ class Perusahaan extends Authenticatable
         'file_verifikasi',
         'status_verifikasi', // 'pending' atau 'approved'
     ];
+    
 
     public function lowongan()
     {

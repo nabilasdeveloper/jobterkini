@@ -9,12 +9,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/styles.min.css') }}" />
 </head>
 
-<style>
-    .warna-bg {
-        background-color: rgb(0, 0, 186);
-    }
-</style>
-
 <body class="warna-bg">
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"

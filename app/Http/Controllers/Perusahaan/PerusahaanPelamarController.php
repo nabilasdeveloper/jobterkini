@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Perusahaan;
 
+use App\Models\User;
+use App\Models\Pelamar;
 use App\Models\Lowongan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Pelamar;
 use Illuminate\Support\Facades\Auth;
 
 class PerusahaanPelamarController extends Controller
@@ -13,10 +14,8 @@ class PerusahaanPelamarController extends Controller
     public function index()
     {
         $perusahaan = Auth::guard('perusahaan')->user();
-
-        // Ambil semua lowongan milik perusahaan beserta jumlah pelamar
         $lowonganList = Lowongan::where('perusahaan_id', $perusahaan->id)
-            ->withCount('pelamar') // Hitung jumlah pelamar
+            ->withCount('pelamar')
             ->get();
 
         return view('perusahaan.kelolapelamar.perusahaan-kelolapelamar', compact([
@@ -32,9 +31,8 @@ class PerusahaanPelamarController extends Controller
             ->where('perusahaan_id', $perusahaan->id)
             ->firstOrFail();
 
-        // Ambil daftar pelamar untuk lowongan ini
         $pelamarList = Pelamar::where('lowongan_id', $lowongan_id)
-            ->with('users') // Ambil data pengguna yang melamar
+            ->with('users')
             ->get();
 
         return view('perusahaan.kelolapelamar.perusahaan-kelolapelamar-detail', compact('lowongan', 'pelamarList', 'perusahaan'));
@@ -50,5 +48,11 @@ class PerusahaanPelamarController extends Controller
         $pelamar->update(['status' => $request->status]);
 
         return redirect()->back()->with('success', 'Status lamaran berhasil diperbarui.');
+    }
+
+    public function show($id)
+    {
+        $user = User::with(['pendidikan', 'pengalaman'])->findOrFail($id);
+        return view('Perusahaan.Kelolapelamar.perusahaan-user-detail', compact('user'));
     }
 }

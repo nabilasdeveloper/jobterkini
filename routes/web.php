@@ -2,7 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Users\UserPelamarController;
+use App\Http\Controllers\Users\UserProfileController;
+use App\Http\Controllers\Users\UserBookmarkController;
+use App\Http\Controllers\Users\UserLowonganController;
+use App\Http\Controllers\Users\Auth\UserAuthController;
+use App\Http\Controllers\Users\UserDashboardController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Users\UserPerusahaanController;
 use App\Http\Controllers\Admin\AdminPerusahaanController;
 use App\Http\Controllers\Admin\AdminKelolaJurusanController;
 use App\Http\Controllers\Perusahaan\PerusahaanAuthController;
@@ -76,12 +83,52 @@ Route::prefix('perusahaan')->middleware(['perusahaan', 'perusahaan.verified'])->
     Route::get('/kelola-lowongan/add', [PerusahaanKelolaLowonganController::class, 'add'])->name('perusahaan.kelolalowongan.add');
     Route::post('/kelola-lowongan/adds', [PerusahaanKelolaLowonganController::class, 'adds'])->name('perusahaan.kelolalowongan.adds');
     Route::get('/kelola-lowongan/edit/{id}', [PerusahaanKelolaLowonganController::class, 'edit'])->name('perusahaan.kelolalowongan.edit');
-    Route::put('/kelola-lowongan/update/{id}', [PerusahaanKelolaLowonganController::class, 'update'])->name('perusahaan.kelolalowongan.update');
+    Route::post('/kelola-lowongan/update', [PerusahaanKelolaLowonganController::class, 'update'])->name('perusahaan.kelolalowongan.update');
     Route::delete('/kelola-lowongan/{id}', [PerusahaanKelolaLowonganController::class, 'destroy'])->name('perusahaan.kelolalowongan.destroy');
+    Route::get('/kelola-lowongan/detail/{id}', [PerusahaanKelolaLowonganController::class, 'show'])->name('perusahaan.kelolalowongan.detail');
+    Route::get('/kelola-lowongan/ubahstatus/{id}', [PerusahaanKelolaLowonganController::class, 'ubahStatus'])->name('perusahaan.kelolalowongan.ubahstatus');
 
 
     // Kelola Pendaftar
     Route::get('/kelola-pelamar', [PerusahaanPelamarController::class, 'index'])->name('perusahaan.kelolapelamar');
     Route::get('/pelamar/{lowongan_id}', [PerusahaanPelamarController::class, 'detail'])->name('perusahaan.kelolapelamar.detail');
     Route::put('/pelamar/update/{id}', [PerusahaanPelamarController::class, 'updateStatus'])->name('perusahaan.kelolapelamar.update');
+    Route::get('/pelamar/user/{id}', [PerusahaanPelamarController::class, 'show'])->name('perusahaan.kelolapelamar.user.detail');
+
+});
+
+Route::prefix('job-terkini')->group(function () {
+    Route::get('/register', [UserAuthController::class, 'formRegister'])->name('user-register');
+    Route::post('/register', [UserAuthController::class, 'register'])->name('user-registerin');
+
+    Route::get('/login', [UserAuthController::class, 'formLogin'])->name('user-login');
+    Route::post('/login', [UserAuthController::class, 'login'])->name('user-loginin');
+    Route::post('/logout', [UserAuthController::class, 'logout'])->name('user-logout');
+});
+
+Route::prefix('job-terkini')->middleware(['userMiddleware'])->group(function () {
+    Route::get('/profile/edit', [UserProfileController::class, 'edit'])->name('user-profile');
+    Route::post('/profile/update', [UserProfileController::class, 'update'])->name('user-update');
+
+    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user-dashboard');
+
+    Route::get('/list-perusahaan/{id}', [UserPerusahaanController::class, 'show'])->name('user-perusahaan-detail');
+
+    Route::get('/cari-lowongan', [UserLowonganController::class, 'cari'])->name('user-lowongan-search');
+    Route::get('/cari-lowongans', [UserLowonganController::class, 'search'])->name('user-lowongan-searchs');
+
+    Route::get('/cari-perusahaan', [UserPerusahaanController::class, 'cari'])->name('user-perusahaan-search');
+    Route::get('/cari-perusahaans', [UserPerusahaanController::class, 'search'])->name('user-perusahaan-searchs');
+});
+
+Route::prefix('job-terkini')->middleware(['userMiddleware', 'profile-complete'])->group(function () {
+    Route::get('/bookmarks', [UserBookmarkController::class, 'index'])->name('bookmarks-index');
+    Route::post('/bookmarks', [UserBookmarkController::class, 'store'])->name('bookmarks-store');
+    Route::delete('/bookmarks/{id}', [UserBookmarkController::class, 'destroy'])->name('bookmarks-destroy');
+
+    Route::get('/lamaran/create/{id}', [UserPelamarController::class, 'create'])->name('user-lamaran-create');
+    Route::post('/lamaran/{id}', [UserPelamarController::class, 'store'])->name('user-lamaran-store');
+    Route::get('/lamaran/history', [UserPelamarController::class, 'history'])->name('user-lamaran-history');
+
+    Route::get('/lowongan/{id}', [UserDashboardController::class, 'showLowongan'])->name('lowongan-detail');
 });

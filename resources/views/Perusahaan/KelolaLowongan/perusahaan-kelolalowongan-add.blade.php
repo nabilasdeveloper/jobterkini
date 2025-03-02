@@ -8,19 +8,24 @@
         Selamat datang kembali,
         <span class="text-secondary">{{ $perusahaan->nama_perusahaan }}</span>
     </p>
-    <div class="">
-        <form action="{{ route('perusahaan.kelolalowongan.adds') }}" method="POST">
-            @csrf
-            <input type="hidden" name="perusahaan_id" value="{{ auth('perusahaan')->user()->id }}">
-            <div class="mb-3">
-                <label class="form-label">Nama Lowongan Pekerjaan <span class="text-danger">*</span></label>
-                <input type="text" class="form-control @error('nama_lowongan') is-invalid @enderror"
-                    name="nama_lowongan" value="{{ old('nama_lowongan') }}" required>
-                @error('nama_lowongan')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
+    <div class="card">
+        <div class="card-body">
+            <form action="{{ route('perusahaan.kelolalowongan.adds') }}" method="POST">
+                @csrf
+                <input type="hidden" name="perusahaan_id" value="{{ auth('perusahaan')->user()->id }}">
+                <div class="mb-3">
+                    <label class="form-label">Nama Lowongan Pekerjaan <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control @error('nama_lowongan') is-invalid @enderror"
+                        name="nama_lowongan" value="{{ old('nama_lowongan') }}" required>
+                    @error('nama_lowongan')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+        </div>
+    </div>
 
+    <div class="card">
+        <div class="card-body">
             <div class="row">
                 <div class="col-lg-6">
                     <div class="mb-3">
@@ -31,11 +36,17 @@
                             <option value="Semua Jenjang Pendidikan"
                                 {{ old('jenjang_pendidikan_lowongan') == 'Semua Jenjang Pendidikan' ? 'selected' : '' }}>
                                 Semua Jenjang Pendidikan</option>
+                            <option value="SMA/SMK" {{ old('jenjang_pendidikan_lowongan') == 'SMA/SMK' ? 'selected' : '' }}>SMA/SMK
+                            </option>
                             <option value="S1" {{ old('jenjang_pendidikan_lowongan') == 'S1' ? 'selected' : '' }}>S1
                             </option>
-                            <option value="D4" {{ old('jenjang_pendidikan_lowongan') == 'D4' ? 'selected' : '' }}>D4
+                            <option value="S2" {{ old('jenjang_pendidikan_lowongan') == 'S2' ? 'selected' : '' }}>S2
+                            </option>
+                            <option value="S3" {{ old('jenjang_pendidikan_lowongan') == 'S3' ? 'selected' : '' }}>S3
                             </option>
                             <option value="D3" {{ old('jenjang_pendidikan_lowongan') == 'D3' ? 'selected' : '' }}>D3
+                            </option>
+                            <option value="D4" {{ old('jenjang_pendidikan_lowongan') == 'D4' ? 'selected' : '' }}>D4
                             </option>
                         </select>
                         @error('jenjang_pendidikan_lowongan')
@@ -58,74 +69,97 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="mb-3">
-                <label class="form-label">Persyaratan Lowongan <span class="text-danger">*</span></label>
-                <textarea class="form-control @error('persyaratan_lowongan') is-invalid @enderror" name="persyaratan_lowongan"
-                    id="persyaratanlowongan">{{ old('persyaratan_lowongan') }}</textarea>
-                @error('persyaratan_lowongan')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Rincian Lowongan <span class="text-danger">*</span></label>
-                <textarea class="form-control @error('rincian_lowongan') is-invalid @enderror" name="rincian_lowongan"
-                    id="rincianlowongan">{{ old('rincian_lowongan') }}</textarea>
-                @error('rincian_lowongan')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Kategori Lowongan <span class="text-danger">*</span></label>
-                <input type="text" class="form-control @error('kategori_lowongan') is-invalid @enderror"
-                    name="kategori_lowongan" placeholder="contoh: Keuangan" required>{{ old('kategori_lowongan') }}
-                @error('kategori_lowongan')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Waktu Bekerja <span class="text-danger">*</span></label>
-                <select class="form-select @error('waktu_bekerja') is-invalid @enderror" name="waktu_bekerja" required>
-                    <option value="Full Time" {{ old('waktu_bekerja') == 'Full Time' ? 'selected' : '' }}>
-                        Full Time</option>
-                    <option value="Harian" {{ old('waktu_bekerja') == 'Harian' ? 'selected' : '' }}>
-                        Harian
-                    </option>
-                    <option value="Paruh Waktu" {{ old('waktu_bekerja') == 'Paruh Waktu' ? 'selected' : '' }}>
-                        Paruh Waktu
-                    </option>
-                </select>
-                @error('waktu_bekerja')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Kisaran Gaji Perbulan <span class="text-danger">*</span></label>
-                <select class="form-select @error('gaji_perbulan') is-invalid @enderror" name="gaji_perbulan" required>
-                    <option value="Rp. 1.000.000 - Rp. 5.000.000"
-                        {{ old('gaji_perbulan') == 'Rp. 1.000.000 - Rp. 5.000.000' ? 'selected' : '' }}>
-                        Rp. 1.000.000 - Rp. 5.000.000</option>
-                    <option value="Rp. 5.000.000 - Rp. 7.000.000"
-                        {{ old('gaji_perbulan') == 'Rp. 5.000.000 - Rp. 7.000.000' ? 'selected' : '' }}>
-                        Rp. 5.000.000 - Rp. 7.000.000
-                    </option>
-                    <option value="Rp. 7.000.000 - Rp. 10.000.000"
-                        {{ old('gaji_perbulan') == 'Rp. 7.000.000 - Rp. 10.000.000' ? 'selected' : '' }}>
-                        Rp. 7.000.000 - Rp. 10.000.000
-                    </option>
-                </select>
-                @error('gaji_perbulan')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
+    <div class="card">
+        <div class="card-body">
 
             <div class="row">
-                <div class="col-lg-6">
+
+                <div class="col-md-6">
+                    <label class="form-label">Persyaratan Lowongan <span class="text-danger">*</span></label>
+                    <textarea class="form-control @error('persyaratan_lowongan') is-invalid @enderror" name="persyaratan_lowongan"
+                        id="persyaratanlowongan">{{ old('persyaratan_lowongan') }}</textarea>
+                    @error('persyaratan_lowongan')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Rincian Lowongan <span class="text-danger">*</span></label>
+                    <textarea class="form-control @error('rincian_lowongan') is-invalid @enderror" name="rincian_lowongan"
+                        id="rincianlowongan">{{ old('rincian_lowongan') }}</textarea>
+                    @error('rincian_lowongan')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-3">
+
+                <div class="col-md-6">
+                    <label class="form-label">Kategori Lowongan <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control @error('kategori_lowongan') is-invalid @enderror"
+                        name="kategori_lowongan" placeholder="contoh: Keuangan" required>{{ old('kategori_lowongan') }}
+                    @error('kategori_lowongan')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Waktu Bekerja <span class="text-danger">*</span></label>
+                    <select class="form-select @error('waktu_bekerja') is-invalid @enderror" name="waktu_bekerja"
+                        required>
+                        <option value="Full Time" {{ old('waktu_bekerja') == 'Full Time' ? 'selected' : '' }}>
+                            Full Time</option>
+                        <option value="Part Time" {{ old('waktu_bekerja') == 'Part Time' ? 'selected' : '' }}>
+                            Part Time
+                        </option>
+                        <option value="Internship" {{ old('waktu_bekerja') == 'Internship' ? 'selected' : '' }}>
+                            Internship
+                        </option>
+                        <option value="Freelance" {{ old('waktu_bekerja') == 'Freelance' ? 'selected' : '' }}>
+                            Freelance
+                        </option>
+                        <option value="Remote" {{ old('waktu_bekerja') == 'Remote' ? 'selected' : '' }}>
+                            Remote
+                        </option>
+                    </select>
+                    @error('waktu_bekerja')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="form-label">Kisaran Gaji Perbulan <span class="text-danger">*</span></label>
+                    <select class="form-select @error('gaji_perbulan') is-invalid @enderror" name="gaji_perbulan"
+                        required>
+                        <option value="Rp. 1.000.000 - Rp. 5.000.000"
+                            {{ old('gaji_perbulan') == 'Rp. 1.000.000 - Rp. 5.000.000' ? 'selected' : '' }}>
+                            Rp. 1.000.000 - Rp. 5.000.000</option>
+                        <option value="Rp. 5.000.000 - Rp. 7.000.000"
+                            {{ old('gaji_perbulan') == 'Rp. 5.000.000 - Rp. 7.000.000' ? 'selected' : '' }}>
+                            Rp. 5.000.000 - Rp. 7.000.000
+                        </option>
+                        <option value="Rp. 7.000.000 - Rp. 10.000.000"
+                            {{ old('gaji_perbulan') == 'Rp. 7.000.000 - Rp. 10.000.000' ? 'selected' : '' }}>
+                            Rp. 7.000.000 - Rp. 10.000.000
+                        </option>
+                    </select>
+                    @error('gaji_perbulan')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+
+                <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">Tanggal Penutupan <span class="text-danger">*</span></label>
                         <input type="date" class="form-control @error('penutupan_lowongan') is-invalid @enderror"
@@ -135,26 +169,30 @@
                         @enderror
                     </div>
                 </div>
-
-                <div class="col-lg-6">
-                    <div class="mb-3">
-                        <label class="form-label">Status Lowongan <span class="text-danger">*</span></label>
-                        <select class="form-select @error('status_lowongan') is-invalid @enderror"
-                            name="status_lowongan" required>
-                            <option value="Aktif" {{ old('status_lowongan') == 'Aktif' ? 'selected' : '' }}>
-                                Aktif</option>
-                            <option value="Non-Aktif" {{ old('status_lowongan') == 'Non-Aktif' ? 'selected' : '' }}>
-                                Non-Aktif
-                            </option>
-                        </select>
-                        @error('status_lowongan')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="mb-3">
+                <div class="mb-3">
+                    <label class="form-label">Status Lowongan <span class="text-danger">*</span></label>
+                    <select class="form-select @error('status_lowongan') is-invalid @enderror" name="status_lowongan"
+                        required>
+                        <option value="Aktif" {{ old('status_lowongan') == 'Aktif' ? 'selected' : '' }}>
+                            Aktif</option>
+                        <option value="Non-Aktif" {{ old('status_lowongan') == 'Non-Aktif' ? 'selected' : '' }}>
+                            Non-Aktif
+                        </option>
+                    </select>
+                    @error('status_lowongan')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">Tambah Data</button>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 

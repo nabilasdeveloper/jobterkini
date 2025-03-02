@@ -96,11 +96,11 @@
     </div>
 
     <div class="mb-4">
-        <h5 class="text-muted">{!! $lowongan->persyaratan_lowongan !!}</h5>
+        <p class="text-muted">{!! $lowongan->persyaratan_lowongan !!}</p>
     </div>
 
     <div class="mb-5">
-        <h5 class="text-muted">{!! $lowongan->rincian_lowongan !!}</h5>
+        <p class="text-muted">{!! $lowongan->rincian_lowongan !!}</p>
     </div>
 
 

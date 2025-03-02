@@ -30,7 +30,9 @@ class AdminKelolaJurusanController extends Controller
     public function adds(Request $request)
     {
         $request->validate([
-            'nama_jurusan' => 'required|string'
+            'nama_jurusan' => 'required|string|unique:jurusan,nama_jurusan'
+        ], [
+            'nama_jurusan.unique' => 'Nama jurusan sudah ada!'
         ]);
 
         Jurusan::create([

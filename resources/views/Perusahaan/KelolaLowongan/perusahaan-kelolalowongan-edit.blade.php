@@ -9,7 +9,7 @@
         <span class="text-secondary">{{ $perusahaan->nama_perusahaan }}</span>
     </p>
 
-    <form action="{{ route('perusahaan.kelolalowongan.edit') }}" method="POST">
+    <form action="{{ route('perusahaan.kelolalowongan.update') }}" method="POST">
         @csrf
         <input type="hidden" name="lowongan_id" value="{{ $lowongan->id }}">
 
